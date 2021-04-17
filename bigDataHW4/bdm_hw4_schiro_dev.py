@@ -96,7 +96,8 @@ if __name__=='__main__':
     .map(lambda x: (pipe(x, str)[:10], 0))
 
 
-    # output = pattern \
-    # .map(lambda x: next(csv.reader([x]))).take(1)
+    output = pattern \
+    .map(lambda x: next(csv.reader([x]))).take(1)
     
-    place.saveAsTextFile("TEST")
+    #place.saveAsTextFile("TEST")
+    output.saveAsTextFile("TEST")
