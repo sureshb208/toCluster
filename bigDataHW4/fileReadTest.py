@@ -14,13 +14,16 @@ if __name__=='__main__':
     #from toolz import pipe # server currently doesnt have this package ugh
 
     sc = SparkContext()
-    root = os.getcwd() # + "/dev/gradschool/bigData/HW4/"
-    data = "/data/share/bdm/"
+    #root = os.getcwd() # + "/dev/gradschool/bigData/HW4/"
+    #data = "/data/share/bdm/"
 
     
     #placeFile = os.path.join(data, "core-places-nyc.csv")
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
-    place = sc.read.csv(placeFile)
+    place = sc.textFile(placeFile, use_unicode=True).cache()
+
+    spark.read.format("csv").option("header", "true").load("hdfs://x.x.x.x:8020/folder/file.csv")
+
     # # place = spark.read.format('csv') \
     # # .option('header',True) \
     # # .option('multiLine', True) \
