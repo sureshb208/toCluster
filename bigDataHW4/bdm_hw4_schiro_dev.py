@@ -28,7 +28,7 @@ if __name__=='__main__':
     patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
     
     place = sc.textFile(placeFile, use_unicode=True).cache()
-    pattern = sc.textFile(patternFile, use_unicode=True).cache()
+    pattern = sc.textFile(patternFile).cache()
 
     # ======================================================= #
     #   Define pipe from toolz package because not on server
@@ -95,10 +95,8 @@ if __name__=='__main__':
     dateData = pipe(pd.date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
     .map(lambda x: (pipe(x, str)[:10], 0))
 
-
     output = pattern \
-    .map(lambda x: next(unicode_csv_reader([x])))
-    
+    .map(lambda x: next(csv.reader([x]))).take(1)
 
 
     #output = pattern \
