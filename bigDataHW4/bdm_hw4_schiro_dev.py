@@ -22,11 +22,8 @@ if __name__=='__main__':
 
     # ================================ #
     #           load data
-    # ================================ #
-    root = os.getcwd() # + "/dev/gradschool/bigData/HW4/"
-    data = "/data/share/bdm/"
+    # ================================ #    
 
-    
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
     patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
     
@@ -102,4 +99,4 @@ if __name__=='__main__':
     #output = pattern \
     #.map(lambda x: next(csv.reader([x]))).take(1)
     
-    place.saveAsTextFile("TEST", use_unicode=True)
+    place.saveAsTextFile("TEST")
