@@ -11,7 +11,7 @@ if __name__=='__main__':
     import datetime, json
     import numpy as np
     from itertools import compress
-    # from toolz import pipe
+    from toolz import pipe
 
     # sc = SparkContext()
     # root = os.getcwd() # + "/dev/gradschool/bigData/HW4/"
