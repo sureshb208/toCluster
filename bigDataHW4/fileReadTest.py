@@ -25,7 +25,7 @@ if __name__=='__main__':
     place = sc.textFile(placeFile, use_unicode=True).cache()
     pattern = sc.textFile(patternFile, use_unicode=True).cache()
 
-    place.saveAsTextFile('debug_test2')
+    pattern.saveAsTextFile('debug_test3')
     # # place = spark.read.format('csv') \
     # # .option('header',True) \
     # # .option('multiLine', True) \
