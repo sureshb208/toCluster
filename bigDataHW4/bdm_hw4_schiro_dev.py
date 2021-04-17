@@ -97,7 +97,8 @@ if __name__=='__main__':
 
 
     output = pattern \
-    .map(lambda x: next(csv.reader([x])))   
+    #.map(lambda x: next(csv.reader([x])))   
+    .map(lambda x: next(unicode_csv_reader([x])))
     
     #place.saveAsTextFile("TEST")
     output.saveAsTextFile("TEST")
