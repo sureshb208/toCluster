@@ -89,9 +89,9 @@ if __name__=='__main__':
         .collect()
     )
 
-    list(enumerate(pattern.first().split(',')))
+    #list(enumerate(pattern.first().split(',')))
 
-    get the 2020 leap-year dates
+    #get the 2020 leap-year dates
     dateData = pipe(pd.date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
     .map(lambda x: (pipe(x, str)[:10], 0))
 
