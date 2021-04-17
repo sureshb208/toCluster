@@ -20,7 +20,10 @@ if __name__=='__main__':
     
     #placeFile = os.path.join(data, "core-places-nyc.csv")
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
+    patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
+    
     place = sc.textFile(placeFile, use_unicode=True).cache()
+    pattern = sc.textFile(patternFile, use_unicode=True).cache()
 
     place.saveAsTextFile('debug_test2')
     # # place = spark.read.format('csv') \
