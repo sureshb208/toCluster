@@ -22,8 +22,7 @@ if __name__=='__main__':
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
     place = sc.textFile(placeFile, use_unicode=True).cache()
 
-    #spark.read.format("csv").option("header", "true").load("hdfs://x.x.x.x:8020/folder/file.csv")
-
+    place.saveAsTextFile('debug_test2')
     # # place = spark.read.format('csv') \
     # # .option('header',True) \
     # # .option('multiLine', True) \
@@ -32,8 +31,8 @@ if __name__=='__main__':
     # place.saveAsTextFile(os.path.join(root, "results/TEST"))
 
     #sc = SparkContext()
-    sc.textFile('book.txt') \
-        .flatMap(lambda x: x.split()) \
-        .map(lambda x: (x,1)) \
-        .reduceByKey(lambda x,y: x+y) \
-        .saveAsTextFile('debug_test1')
+    # sc.textFile('book.txt') \
+    #     .flatMap(lambda x: x.split()) \
+    #     .map(lambda x: (x,1)) \
+    #     .reduceByKey(lambda x,y: x+y) \
+    #     .saveAsTextFile('debug_test1')
