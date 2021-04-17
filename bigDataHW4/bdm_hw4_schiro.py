@@ -1,4 +1,4 @@
-
+# yarn logs -applicationId application_1609183734776_2282
 # File Location 1: 
 #    /data/share/bdm/core-places-nyc.csv
 # File Location 2: 
@@ -29,9 +29,17 @@ if __name__=='__main__':
 
     
     placeFile = os.path.join(data, "core-places-nyc.csv")
-    patternFile = os.path.join(data, "weekly-patterns-nyc-2019-2020")
-    place = sc.textFile(placeFile, use_unicode=True).cache()
-    pattern = sc.textFile(patternFile, use_unicode=True).cache()
+    patternFile = os.path.join(data, "weekly-patterns-nyc-2019-2020/*")
+
+    place = spark.read.format('csv') \
+    .option('header',True) \
+    .option('multiLine', True) \
+    .load(placeFile).cache()
+    
+    pattern = sc.read.csv(patternFile).cache()
+
+    #place = sc.textFile(placeFile, use_unicode=True).cache()
+    #pattern = sc.textFile(patternFile, use_unicode=True).cache()
 
     #------- define groups --------
     NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
