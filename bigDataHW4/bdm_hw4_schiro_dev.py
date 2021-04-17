@@ -100,7 +100,7 @@ if __name__=='__main__':
     spark = SparkSession(sc)
     pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = "^", escape= "\"")
     pattern = pattern.rdd.map(list)
-    pattern.map(lambda x: len(x))
+    pattern = pattern.map(lambda x: len(x))
     pattern.saveAsTextFile("TEST")
 
 
