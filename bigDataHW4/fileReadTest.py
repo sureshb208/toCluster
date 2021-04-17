@@ -22,7 +22,7 @@ if __name__=='__main__':
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
     place = sc.textFile(placeFile, use_unicode=True).cache()
 
-    spark.read.format("csv").option("header", "true").load("hdfs://x.x.x.x:8020/folder/file.csv")
+    #spark.read.format("csv").option("header", "true").load("hdfs://x.x.x.x:8020/folder/file.csv")
 
     # # place = spark.read.format('csv') \
     # # .option('header',True) \
