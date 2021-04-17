@@ -12,12 +12,11 @@ if __name__=='__main__':
     import sys
     import os
     import pyspark
-    import re
     import pandas as pd
     import datetime, json, csv
     import numpy as np
     from itertools import compress
-    from toolz import pipe
+    #from toolz import pipe
 
     sc = SparkContext()
 
@@ -28,18 +27,38 @@ if __name__=='__main__':
     data = "/data/share/bdm/"
 
     
-    placeFile = os.path.join(data, "core-places-nyc.csv")
-    patternFile = os.path.join(data, "weekly-patterns-nyc-2019-2020/*")
-
-    place = spark.read.format('csv') \
-    .option('header',True) \
-    .option('multiLine', True) \
-    .load(placeFile).cache()
+    placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
+    patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
     
-    pattern = sc.read.csv(patternFile).cache()
+    place = sc.textFile(placeFile, use_unicode=True).cache()
+    pattern = sc.textFile(patternFile, use_unicode=True).cache()
 
-    #place = sc.textFile(placeFile, use_unicode=True).cache()
-    #pattern = sc.textFile(patternFile, use_unicode=True).cache()
+    # ======================================================= #
+    #   Define pipe from toolz package because not on server
+    # ======================================================= #
+    def pipe(data, *funcs):
+        """ Pipe a value through a sequence of functions
+
+        I.e. ``pipe(data, f, g, h)`` is equivalent to ``h(g(f(data)))``
+
+        We think of the value as progressing through a pipe of several
+        transformations, much like pipes in UNIX
+
+        ``$ cat data | f | g | h``
+
+        >>> double = lambda i: 2 * i
+        >>> pipe(3, double, str)
+        '6'
+
+        See Also:
+            compose
+            compose_left
+            thread_first
+            thread_last
+        """
+        for func in funcs:
+            data = func(data)
+        return data
 
     #------- define groups --------
     NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
