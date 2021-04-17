@@ -10,7 +10,7 @@ if __name__=='__main__':
     import pandas as pd
     import datetime, json
     import numpy as np
-    # from itertools import compress
+    from itertools import compress
     # from toolz import pipe
 
     # sc = SparkContext()
