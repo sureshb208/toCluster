@@ -5,10 +5,10 @@ if __name__=='__main__':
     from pyspark import SparkContext
     import sys
     import os
-     import pyspark
-     import re
-     import pandas as pd
-     import datetime, json, csv
+    import pyspark
+    #import re
+    #import pandas as pd
+    #import datetime, json, csv
     # import numpy as np
     # from itertools import compress
     # from toolz import pipe
