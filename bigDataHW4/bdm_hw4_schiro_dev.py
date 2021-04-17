@@ -28,7 +28,7 @@ if __name__=='__main__':
     patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
     
     place = sc.textFile(placeFile, use_unicode=True).cache()
-    pattern = sc.textFile(patternFile).cache()
+    pattern = sc.textFile(patternFile, use_unicode=False).cache()
 
     # ======================================================= #
     #   Define pipe from toolz package because not on server
@@ -104,3 +104,5 @@ if __name__=='__main__':
 
     #place.saveAsTextFile("TEST")
     output.saveAsTextFile("TEST")
+
+    # save error search traceback
