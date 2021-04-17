@@ -128,4 +128,4 @@ if __name__=='__main__':
     ))
     out = output.sortBy(lambda x: x[1])
     
-    out.saveAsTextFile(os.path.join(root, "results/TEST"))
+    out.saveAsTextFile("TEST")
