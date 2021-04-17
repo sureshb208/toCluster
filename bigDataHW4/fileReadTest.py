@@ -19,9 +19,10 @@ if __name__=='__main__':
 
     
     placeFile = os.path.join(data, "core-places-nyc.csv")
-    place = spark.read.format('csv') \
-    .option('header',True) \
-    .option('multiLine', True) \
-    .load(placeFile).cache()
+    place = sc.read.csv(placeFile)
+    # place = spark.read.format('csv') \
+    # .option('header',True) \
+    # .option('multiLine', True) \
+    # .load(placeFile).cache()
     
     place.saveAsTextFile(os.path.join(root, "results/TEST"))
