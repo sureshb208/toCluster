@@ -33,70 +33,70 @@ if __name__=='__main__':
     # ======================================================= #
     #   Define pipe from toolz package because not on server
     # ======================================================= #
-    # def pipe(data, *funcs):
-    #     """ Pipe a value through a sequence of functions
+    def pipe(data, *funcs):
+        """ Pipe a value through a sequence of functions
 
-    #     I.e. ``pipe(data, f, g, h)`` is equivalent to ``h(g(f(data)))``
+        I.e. ``pipe(data, f, g, h)`` is equivalent to ``h(g(f(data)))``
 
-    #     We think of the value as progressing through a pipe of several
-    #     transformations, much like pipes in UNIX
+        We think of the value as progressing through a pipe of several
+        transformations, much like pipes in UNIX
 
-    #     ``$ cat data | f | g | h``
+        ``$ cat data | f | g | h``
 
-    #     >>> double = lambda i: 2 * i
-    #     >>> pipe(3, double, str)
-    #     '6'
+        >>> double = lambda i: 2 * i
+        >>> pipe(3, double, str)
+        '6'
 
-    #     See Also:
-    #         compose
-    #         compose_left
-    #         thread_first
-    #         thread_last
-    #     """
-    #     for func in funcs:
-    #         data = func(data)
-    #     return data
+        See Also:
+            compose
+            compose_left
+            thread_first
+            thread_last
+        """
+        for func in funcs:
+            data = func(data)
+        return data
 
-    # #------- define groups --------
-    # NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
+    #------- define groups --------
+    NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
 
-    # name1 = "Big Box Grocers"
-    # name2 = "Convenience Stores"
-    # name3 = "Drinking Places"
-    # name4 = "Full-Service Restaurants"
-    # name5 = "Limited-Service Restaurants"
-    # name6 = "Pharmacies and Drug Stores"
-    # name7 = "Snack and Bakeries"
-    # name8 = "Specialty Food Stores"
-    # name9 = "Supermarkets (except Convenience Stores)"
+    name1 = "Big Box Grocers"
+    name2 = "Convenience Stores"
+    name3 = "Drinking Places"
+    name4 = "Full-Service Restaurants"
+    name5 = "Limited-Service Restaurants"
+    name6 = "Pharmacies and Drug Stores"
+    name7 = "Snack and Bakeries"
+    name8 = "Specialty Food Stores"
+    name9 = "Supermarkets (except Convenience Stores)"
 
-    # code1 = ('452210', '452311')
-    # code2 = ('445120')
-    # code3 = ('722410')
-    # code4 = ('722511')
-    # code5 = ('722513')
-    # code6 = ('446110', '446191')
-    # code7 = ('311811', '722515')
-    # code8 = ('445210', '445220', '445230', '445291', '445292', '445299')
-    # code9 = ('445110')
+    code1 = ('452210', '452311')
+    code2 = ('445120')
+    code3 = ('722410')
+    code4 = ('722511')
+    code5 = ('722513')
+    code6 = ('446110', '446191')
+    code7 = ('311811', '722515')
+    code8 = ('445210', '445220', '445230', '445291', '445292', '445299')
+    code9 = ('445110')
 
-    # # repeat for all sets in production code
-    # set4 = set(place \
-    #     .map(lambda x: x.split(',')) \
-    #     .map(lambda x: (x[1], x[9], x[13])) \
-    #     .filter(lambda x: (x[1] in code4) and (x[2] in NYC_CITIES)) \
-    #     .map(lambda x: x[0]) \
-    #     .collect()
-    # )
+    # repeat for all sets in production code
+    set4 = set(place \
+        .map(lambda x: x.split(',')) \
+        .map(lambda x: (x[1], x[9], x[13])) \
+        .filter(lambda x: (x[1] in code4) and (x[2] in NYC_CITIES)) \
+        .map(lambda x: x[0]) \
+        .collect()
+    )
 
-    # list(enumerate(pattern.first().split(',')))
+    list(enumerate(pattern.first().split(',')))
 
-    # get the 2020 leap-year dates
-    # dateData = pipe(pd.date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
-    # .map(lambda x: (pipe(x, str)[:10], 0))
+    get the 2020 leap-year dates
+    dateData = pipe(pd.date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
+    .map(lambda x: (pipe(x, str)[:10], 0))
 
 
-    #output = pattern \
-    #.map(lambda x: next(csv.reader([x]))).take(1)
+    output = pattern \
+    .map(lambda x: next(csv.reader([x]))).take(1)
     
     place.saveAsTextFile("TEST")
