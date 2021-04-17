@@ -27,7 +27,7 @@ if __name__=='__main__':
     
     # place.saveAsTextFile(os.path.join(root, "results/TEST"))
 
-    sc = SparkContext()
+    #sc = SparkContext()
     sc.textFile('book.txt') \
         .flatMap(lambda x: x.split()) \
         .map(lambda x: (x,1)) \
