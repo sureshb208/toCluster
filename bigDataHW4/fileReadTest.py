@@ -11,15 +11,15 @@ if __name__=='__main__':
     import datetime, json
     import numpy as np
     from itertools import compress
-    from toolz import pipe
+    #from toolz import pipe # server currently doesnt have this package ugh
 
-    # sc = SparkContext()
-    # root = os.getcwd() # + "/dev/gradschool/bigData/HW4/"
-    # data = "/data/share/bdm/"
+    sc = SparkContext()
+    root = os.getcwd() # + "/dev/gradschool/bigData/HW4/"
+    data = "/data/share/bdm/"
 
     
-    # placeFile = os.path.join(data, "core-places-nyc.csv")
-    # place = sc.read.csv(placeFile)
+    placeFile = os.path.join(data, "core-places-nyc.csv")
+    place = sc.read.csv(placeFile)
     # # place = spark.read.format('csv') \
     # # .option('header',True) \
     # # .option('multiLine', True) \
