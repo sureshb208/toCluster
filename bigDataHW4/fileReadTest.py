@@ -18,7 +18,8 @@ if __name__=='__main__':
     data = "/data/share/bdm/"
 
     
-    placeFile = os.path.join(data, "core-places-nyc.csv")
+    #placeFile = os.path.join(data, "core-places-nyc.csv")
+    placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
     place = sc.read.csv(placeFile)
     # # place = spark.read.format('csv') \
     # # .option('header',True) \
