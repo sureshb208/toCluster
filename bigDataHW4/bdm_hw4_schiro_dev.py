@@ -101,7 +101,7 @@ if __name__=='__main__':
     
 
 
-    output = pattern \
+    #output = pattern \
     #.map(lambda x: next(csv.reader([x])))   
 
     #place.saveAsTextFile("TEST")
