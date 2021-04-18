@@ -107,8 +107,8 @@ if __name__=='__main__':
     )    
     #rdd = sc.parallelize(pattern.columns)
     #rdd.saveAsTextFile("TEST")
-    
-    theLength = pattern.filter(pattern['safegraph_place_id'].isin(set4)).count()
+    theLength = pattern.count()
+    #theLength = pattern.filter(pattern['safegraph_place_id'].isin(set4)).count()
     
 
     rdd = sc.parallelize(np.repeat(theLength, 100))
