@@ -96,9 +96,9 @@ if __name__=='__main__':
     .map(lambda x: (pipe(x, str)[:10], 0))
 
     from pyspark.sql.session import SparkSession
-
+    patternFile = os.path.join(data, "weekly-patterns-nyc-2019-2020/*")
     spark = SparkSession(sc)
-    pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = ",", escape= "\"")
+    pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = ",", escape= "\n")
     pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
     .saveAsTextFile("TEST")
     #df.count() #47,455
