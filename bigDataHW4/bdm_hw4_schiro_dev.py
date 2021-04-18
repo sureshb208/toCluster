@@ -99,7 +99,6 @@ if __name__=='__main__':
 
     spark = SparkSession(sc)
     pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = ",", escape= "\"") \
-    .filter(pattern['safegraph_place_id']  in set4) \
     .pattern.filter(pattern.safegraph_place_id.isin(set4)) \
     .saveAsTextFile("TEST")
     #df.count() #47,455
