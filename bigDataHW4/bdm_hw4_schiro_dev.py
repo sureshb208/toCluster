@@ -125,11 +125,11 @@ if __name__=='__main__':
         return(out) 
 
     pattern = pattern.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x)
-    pattern = pattern.union(dateData) #\
-    # .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) 
+    pattern = pattern.union(dateData) \
+    .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) 
 
     pattern.saveAsTextFile("TEST")
-
+    #pattern.saveAsTextFile(os.path.join(root, "results/TEST"))
     # .map(lambda x: (
     #     x[0], x[1],
     #     pipe([0, x[1] - x[2]], np.array, np.max),
