@@ -110,7 +110,7 @@ if __name__=='__main__':
         inferSchema='true'
     )
     pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4))
-    pattern = pattern.filter(
+    pattern.filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
