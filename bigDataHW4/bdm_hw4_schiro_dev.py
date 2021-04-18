@@ -108,8 +108,13 @@ if __name__=='__main__':
     #rdd = sc.parallelize(pattern.columns)
     #rdd.saveAsTextFile("TEST")
     
-    rdd = sc.parallelize(pattern.filter(pattern['safegraph_place_id'].isin(set4)).take(1))
-    rdd.saveAsTextFile("TEST")
+    theLength = pattern.filter(pattern['safegraph_place_id'].isin(set4)).count()
+    
+
+    text_file = open("Output.txt", "w")
+    text_file.write(str(theLength))
+    text_file.close()
+
     #df.count() #47,455
 
 
