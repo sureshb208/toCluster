@@ -100,8 +100,40 @@ if __name__=='__main__':
     spark = SparkSession(sc)
     pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = "^", escape= "\"")
     pattern = pattern.rdd.map(list)
-    pattern = pattern.map(lambda x: len(x))
-    pattern.saveAsTextFile("TEST")
+    #pattern = pattern.map(lambda x: len(x))
+    #pattern.saveAsTextFile("TEST")
+
+    output = pattern \
+    .filter(lambda x: x[1] in set4) \
+    .filter(lambda x: 
+        datetime.datetime.strptime(x[13][:10], "%Y-%m-%d") >= datetime.datetime(2019,1,1) and
+        datetime.datetime.strptime(x[13][:10], "%Y-%m-%d") < datetime.datetime(2021,1,1)
+    ) \
+    .map(lambda x: 
+        (x[1], (x[12][:10], x[13][:10], x[16]))) \
+    .flatMap(lambda x: [(
+        #x[0], if I need ID for some reason
+        pipe(pd.date_range(x[1][0], x[1][1])[count], str)[:10], 
+        value
+    ) for 
+        count, value in pipe(x[1][2], json.loads, enumerate)
+    ]).union(dateData) \
+    .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
+    .map(lambda x: (
+        x[0], x[1],
+        pipe([0, x[1] - x[2]], np.array, np.max),
+        pipe([0, x[1] + x[2]], np.array, np.max)
+    )) \
+    .map(lambda x: (
+        pipe(x[0][:4], int), # year
+        '2020' + x[0][4:], # 2020 date for leap year
+        x[1], x[2], x[3]
+    ))
+    out = output.sortBy(lambda x: x[1])
+    out.saveAsTextFile("TEST")
+
+    #pattern.saveAsTextFile("TEST")
+    # pattern.saveAsTextFile(os.path.join(root, "results/TEST"))
 
 
 
