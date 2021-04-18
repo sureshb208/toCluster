@@ -116,6 +116,7 @@ if __name__=='__main__':
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
+    .groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
     .saveAsTextFile("TEST")
 
     #.saveAsTextFile(os.path.join(root, "results/TEST"))
