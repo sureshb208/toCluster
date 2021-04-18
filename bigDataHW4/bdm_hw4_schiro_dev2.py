@@ -114,11 +114,10 @@ if __name__=='__main__':
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x).cache()
+    pattern = sc.union([pattern, dateData]).cache()
     checkVar = pattern.getNumPartitions()
     pipe(np.repeat(checkVar, 50), sc.parallelize).saveAsTextFile("checkPartitions")
-
-    # pattern = sc.union([pattern, dateData]).cache()
-    # pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
+    #pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
     # .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     # .saveAsTextFile("TEST2")
 
