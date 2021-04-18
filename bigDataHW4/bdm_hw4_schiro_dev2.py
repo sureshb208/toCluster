@@ -28,7 +28,7 @@ if __name__=='__main__':
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
     patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
     
-    place = sc.textFile(placeFile, use_unicode=True).cache()
+    place = sc.textFile(placeFile, use_unicode=True)
     #pattern = sc.textFile(patternFile, use_unicode=True).cache()
 
     # ======================================================= #
@@ -59,8 +59,6 @@ if __name__=='__main__':
         return data
 
     #------- define groups --------
-    NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
-
     name1 = "Big Box Grocers"
     name2 = "Convenience Stores"
     name3 = "Drinking Places"
@@ -85,7 +83,7 @@ if __name__=='__main__':
     set4 = set(place \
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
-        .filter(lambda x: (x[1] in code4) and (x[2] in NYC_CITIES)) \
+        .filter(lambda x: (x[1] in code4)) \
         .map(lambda x: x[0]) \
         .collect()
     )
@@ -109,15 +107,16 @@ if __name__=='__main__':
         header='true', 
         inferSchema='true'
     )
-    pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4))
-    pattern.filter(
+    pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
+    .filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
-    .groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
-    .groupByKey() \
+    .groupByKey().map(lambda x:  (x[0], [i for i in x[1]]))
+    pattern = sc.union([pattern, dateData])
+    pattern = pattern.groupByKey() \
     .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     .saveAsTextFile("TEST2")
 
@@ -126,4 +125,10 @@ if __name__=='__main__':
     # .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     # .saveAsTextFile("TEST2")
 
+# WHY DOES MERGE MAKE IT ERROR OUT?? 
+# Probably because in this scenario have to appen lists
+# maybe median (list1, list2) is why fail
+
+# rdd = spark.sparkContext.parallelize(pd.date_range("2020-01-01", "2020-12-31"))
+# rdd.toDF()
  
