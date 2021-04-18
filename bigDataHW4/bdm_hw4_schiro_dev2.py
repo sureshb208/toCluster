@@ -108,9 +108,9 @@ if __name__=='__main__':
         format='com.databricks.spark.csv', 
         header='true', 
         inferSchema='true'
-    ) \
-    .filter(pattern['safegraph_place_id'].isin(set4)) \
-    .filter(
+    )
+    pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4))
+    pattern = pattern.filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
