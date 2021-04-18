@@ -111,13 +111,26 @@ if __name__=='__main__':
     #theLength = pattern.filter(pattern['safegraph_place_id'].isin(set4)).count() #less
     
     pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4))
-    theLength = pattern.filter(
+    pattern = pattern.filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
-    ).count()
+    )
+    pattern = pattern.select(['date_range_start', 'date_range_end', 'visits_by_day'])
+    pattern = pattern.rdd.map(list)
+    pattern.saveAsTextFile("TEST")
 
-    rdd = sc.parallelize(np.repeat(theLength, 100))
-    rdd.saveAsTextFile("TEST")
+    #pattern.withColumn("Z", pd.date_range(col("date_range_start"), col("date_range_end")))
+    # .flatMap(lambda x: [(
+    #     #x[0], if I need ID for some reason
+    #     pipe(pd.date_range(x[1][0], x[1][1])[count], str)[:10], 
+    #     value
+    # ) for 
+    #     count, value in pipe(x[1][2], json.loads, enumerate)
+    # ]).union(dateData)
+
+
+    #rdd = sc.parallelize(np.repeat(theLength, 100))
+    #rdd.saveAsTextFile("TEST")
     #df.count() #47,455
 
 
