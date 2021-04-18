@@ -111,10 +111,8 @@ if __name__=='__main__':
     theLength = pattern.filter(pattern['safegraph_place_id'].isin(set4)).count()
     
 
-    text_file = open("Output.txt", "w")
-    text_file.write(str(theLength))
-    text_file.close()
-
+    rdd = sc.parallelize(np.repeat(theLength, 100))
+    rdd.saveAsTextFile("TEST")
     #df.count() #47,455
 
 
