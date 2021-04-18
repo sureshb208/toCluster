@@ -137,7 +137,7 @@ if __name__=='__main__':
         '2020' + x[0][4:], # 2020 date for leap year
         x[1], x[2], x[3]
     ))
-    pattern = pattern.sortBy(lambda x: x[1])
+    #pattern = pattern.sortBy(lambda x: x[1])
     pattern.saveAsTextFile("TEST")
 
     
