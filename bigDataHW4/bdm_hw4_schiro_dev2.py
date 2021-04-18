@@ -109,13 +109,13 @@ if __name__=='__main__':
         header='true', 
         inferSchema='true'
     ) \
-    pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
-    pattern.filter(
+    .filter(pattern['safegraph_place_id'].isin(set4)) \
+    .filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
-    pattern.select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
-    pattern.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
-    pattern.union(dateData) \
+    .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
+    .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
+    .union(dateData) \
     .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     .saveAsTextFile("TEST")
