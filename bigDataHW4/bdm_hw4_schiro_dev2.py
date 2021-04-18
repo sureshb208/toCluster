@@ -118,7 +118,7 @@ if __name__=='__main__':
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
     .groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
     .union(dateData) \
-    .groupByKey(). \
+    .groupByKey() \
     .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     .saveAsTextFile("TEST2")
 
