@@ -98,11 +98,21 @@ if __name__=='__main__':
     from pyspark.sql.session import SparkSession
     #patternFile = os.path.join(data, "weekly-patterns-nyc-2019-2020/*")
     spark = SparkSession(sc)
-    pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = ",")
+    #pattern = spark.read.csv(patternFile, multiLine=True, header=True,sep = ",")
+    pattern = spark.read.load(
+        patternFile, 
+        format='com.databricks.spark.csv', 
+        header='true', 
+        inferSchema='true'
+    )    
+    
+    
     #pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
     rdd = sc.parallelize(pattern.columns)
     rdd.saveAsTextFile("TEST")
     #df.count() #47,455
+
+
 
 
     #pattern = pattern.rdd.map(list)
