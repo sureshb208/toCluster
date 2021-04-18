@@ -105,10 +105,10 @@ if __name__=='__main__':
         header='true', 
         inferSchema='true'
     )    
+    #rdd = sc.parallelize(pattern.columns)
+    #rdd.saveAsTextFile("TEST")
     
-    
-    #pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
-    rdd = sc.parallelize(pattern.columns)
+    rdd = sc.parallelize(pattern.filter(pattern['safegraph_place_id'].isin(set4)).take(1))
     rdd.saveAsTextFile("TEST")
     #df.count() #47,455
 
