@@ -124,9 +124,9 @@ if __name__=='__main__':
         out = [(dates[i], val) for i, val in vals]
         return(out) 
 
-    pattern = pattern.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
-    pattern.union(dateData) \
-    .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) 
+    pattern = pattern.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x)
+    # pattern.union(dateData) \
+    # .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) 
 
     pattern.saveAsTextFile("TEST")
 
