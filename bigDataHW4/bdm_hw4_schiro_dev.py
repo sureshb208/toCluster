@@ -124,21 +124,24 @@ if __name__=='__main__':
         out = [(dates[i], val) for i, val in vals]
         return(out) 
 
-    pattern = pattern.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x)
-    pattern = pattern.union(dateData) \
-    .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
-    .map(lambda x: (
-        x[0], x[1],
-        pipe([0, x[1] - x[2]], np.array, np.max),
-        pipe([0, x[1] + x[2]], np.array, np.max)
-    )) \
-    .map(lambda x: (
-        pipe(x[0][:4], int), # year
-        '2020' + x[0][4:], # 2020 date for leap year
-        x[1], x[2], x[3]
-    ))
-    #pattern = pattern.sortBy(lambda x: x[1])
+    pattern = pattern.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
+    pattern.union(dateData) \
+    .groupByKey().map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) 
+
     pattern.saveAsTextFile("TEST")
+
+    # .map(lambda x: (
+    #     x[0], x[1],
+    #     pipe([0, x[1] - x[2]], np.array, np.max),
+    #     pipe([0, x[1] + x[2]], np.array, np.max)
+    # )) \
+    # .map(lambda x: (
+    #     pipe(x[0][:4], int), # year
+    #     '2020' + x[0][4:], # 2020 date for leap year
+    #     x[1], x[2], x[3]
+    # ))
+    # #pattern = pattern.sortBy(lambda x: x[1])
+    # pattern.saveAsTextFile("TEST")
 
     
 
