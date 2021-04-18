@@ -98,15 +98,21 @@ if __name__=='__main__':
     from pyspark.sql.session import SparkSession
 
     spark = SparkSession(sc)
-    pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = "^", escape= "\"")
-    pattern = pattern.rdd.map(list)
+    pattern = spark.read.csv(patternFile, multiLine=True, header="True",sep = ",", escape= "\"") \
+    .filter(pattern['safegraph_place_id']  in set4) \
+    .pattern.filter(pattern.safegraph_place_id.isin(set4)) \
+    .saveAsTextFile("TEST")
+    #df.count() #47,455
+
+
+    #pattern = pattern.rdd.map(list)
     #pattern = pattern.map(lambda x: len(x))
     #pattern.saveAsTextFile("TEST")
 
-    output = pattern \
-    .map(lambda x: x[0]) \
-    .filter(lambda x: x[1] in set4)
-    output.saveAsTextFile("TEST")
+    # output = pattern \
+    # .map(lambda x: x[0]) \
+    # .filter(lambda x: x[1] in set4)
+    # output.saveAsTextFile("TEST")
     # .filter(lambda x: 
     #     datetime.datetime.strptime(x[13][:10], "%Y-%m-%d") >= datetime.datetime(2019,1,1) and
     #     datetime.datetime.strptime(x[13][:10], "%Y-%m-%d") < datetime.datetime(2021,1,1)
