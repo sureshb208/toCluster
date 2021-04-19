@@ -9,15 +9,17 @@ if __name__=='__main__':
     #       Initiate Packages
     # ================================ #
     from pyspark import SparkContext
-    import sys
-    import os
     import pyspark
-    import pandas as pd
-    import datetime, json, csv
-    import numpy as np
-    from itertools import compress
+    #import pandas as pd
+    from pandas as date_range
+    import datetime, json
+    #import numpy as np
+    from numpy import median, std
+    #from itertools import compress
     from pyspark.sql.session import SparkSession
     #from toolz import pipe
+    from pyspark.sql.functions import col
+    from pyspark.sql.functions import when
 
     sc = SparkContext()
     #LOCAL = True
@@ -26,6 +28,7 @@ if __name__=='__main__':
     #           load data
     # ================================ #        
     if LOCAL: 
+        import os
         root = os.getcwd() + "/dev/gradschool/bigData/HW4/"
         data = os.path.join(root, "data")
         placeFile = os.path.join(data, "core_poi_ny.csv")
@@ -94,10 +97,6 @@ if __name__=='__main__':
         inferSchema='true'
     ).select(['safegraph_place_id', 'naics_code'])
 
-
-    from pyspark.sql.functions import col
-    from pyspark.sql.functions import when
-
     place = place.withColumn("id", 
         (when(col("naics_code").isin(['452210', '452311']), 0)) \
         .when(col("naics_code") == '445120', 1) \
@@ -124,7 +123,7 @@ if __name__=='__main__':
         (df['date_range_end'] < datetime.datetime(2021,1,1))
     )
     
-    dateData = pipe(pd.date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
+    dateData = pipe(date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
     .map(lambda x: (pipe(x, str)[:10], 0))
 
     def trnsfm(x):        
@@ -137,7 +136,7 @@ if __name__=='__main__':
     # .item converts numpy to python type
     df = df.rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
     .groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
-    .map(lambda x:  (x[0], np.median([i for i in x[1]]).item(), np.std([i for i in x[1]]).item()))
+    .map(lambda x:  (x[0], median([i for i in x[1]]).item(), std([i for i in x[1]]).item()))
     df = df.map(lambda x: (x[0][0], x[0][1], x[1], x[2]))
     df = df.toDF(['date', 'id', 'median', 'sd'])
 
