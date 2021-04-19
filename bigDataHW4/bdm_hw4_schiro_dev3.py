@@ -20,8 +20,8 @@ if __name__=='__main__':
     #from toolz import pipe
 
     sc = SparkContext()
-    LOCAL = True
-    #LOCAL = False
+    #LOCAL = True
+    LOCAL = False
     # ================================ #
     #           load data
     # ================================ #        
