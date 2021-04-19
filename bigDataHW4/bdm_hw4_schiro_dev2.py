@@ -106,14 +106,14 @@ if __name__=='__main__':
         format='com.databricks.spark.csv', 
         header='true', 
         inferSchema='true'
-    ).cache()
+    )
     pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
     .filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
-    .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x).cache()
+    .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x)
     pattern = sc.union([pattern, dateData]).cache()
     pattern = pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]]))
     pattern = pattern.coalesce(20)
