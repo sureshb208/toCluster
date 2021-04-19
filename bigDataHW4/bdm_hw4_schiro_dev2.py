@@ -114,24 +114,11 @@ if __name__=='__main__':
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x)
-    pattern = sc.union([pattern, dateData])
+    pattern = sc.union([pattern, dateData]).cache()
     pattern = pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]]))
-    pattern = pattern.coalesce(20)
+    #pattern = pattern.coalesce(100)
     #checkVar = pattern.getNumPartitions()
     #pipe(np.repeat(checkVar, 50), sc.parallelize).saveAsTextFile("checkPartitions")
     #pattern.saveAsTextFile("TEST2")
     pattern.map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     .saveAsTextFile("TEST2")
-
-    # .union(dateData) \
-    # .groupByKey() \
-    # .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
-    # .saveAsTextFile("TEST2")
-
-# WHY DOES MERGE MAKE IT ERROR OUT?? 
-# Probably because in this scenario have to appen lists
-# maybe median (list1, list2) is why fail
-
-# rdd = spark.sparkContext.parallelize(pd.date_range("2020-01-01", "2020-12-31"))
-# rdd.toDF()
- 
