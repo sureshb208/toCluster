@@ -11,7 +11,7 @@ if __name__=='__main__':
     from pyspark import SparkContext
     import pyspark
     #import pandas as pd
-    from pandas as date_range
+    from pandas import date_range
     import datetime, json
     #import numpy as np
     from numpy import median, std
