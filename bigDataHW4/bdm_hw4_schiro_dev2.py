@@ -113,12 +113,15 @@ if __name__=='__main__':
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
-    .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x)
-    pattern = sc.union([pattern, dateData]).cache()
-    pattern = pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]]))
+    .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
+    #sc.union([pattern, dateData]) \
+    .pattern.union(dateData) \
+    .pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
+    .pattern.map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
+    .saveAsTextFile("TEST2")
+
+
     #pattern = pattern.coalesce(100)
     #checkVar = pattern.getNumPartitions()
     #pipe(np.repeat(checkVar, 50), sc.parallelize).saveAsTextFile("checkPartitions")
     #pattern.saveAsTextFile("TEST2")
-    pattern.map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
-    .saveAsTextFile("TEST2")
