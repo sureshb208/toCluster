@@ -118,6 +118,7 @@ if __name__=='__main__':
     pattern = pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]]))
     checkVar = pattern.getNumPartitions()
     pipe(np.repeat(checkVar, 50), sc.parallelize).saveAsTextFile("checkPartitions")
+    pattern.saveAsTextFile("TEST2")
     # .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     # .saveAsTextFile("TEST2")
 
