@@ -27,6 +27,10 @@ if __name__=='__main__':
 
     placeFile = "hdfs:///data/share/bdm/core-places-nyc.csv"
     patternFile = "hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*"
+    # root = os.getcwd() + "/dev/gradschool/bigData/HW4/"
+    # data = os.path.join(root, "data")
+    # placeFile = os.path.join(data, "core_poi_ny.csv")
+    # patternFile = os.path.join(data, "weekly-patterns-nyc-2019-2020/*")
     
     place = sc.textFile(placeFile, use_unicode=True)
     #pattern = sc.textFile(patternFile, use_unicode=True).cache()
@@ -107,18 +111,19 @@ if __name__=='__main__':
         header='true', 
         inferSchema='true'
     )
-    pattern = pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
+    pattern.filter(pattern['safegraph_place_id'].isin(set4)) \
     .filter(
         (pattern['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (pattern['date_range_end'] < datetime.datetime(2021,1,1))
     ) \
     .select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day']) \
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x) \
-    #sc.union([pattern, dateData]) \
-    .pattern.union(dateData) \
-    .pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
-    .pattern.map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
+    .union(dateData) \
+    .groupByKey().map(lambda x:  (x[0], [i for i in x[1]])) \
+    .map(lambda x:  (x[0], np.median([i for i in x[1]]), np.std([i for i in x[1]]))) \
     .saveAsTextFile("TEST2")
+
+    #sc.union([pattern, dateData]) \
 
 
     #pattern = pattern.coalesce(100)
