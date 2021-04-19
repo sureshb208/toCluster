@@ -127,7 +127,7 @@ if __name__=='__main__':
     .map(lambda x: (pipe(x, str)[:10], 0))
 
     def trnsfm(x):        
-        dr = pd.date_range(x.date_range_start, x.date_range_end)
+        dr = date_range(x.date_range_start, x.date_range_end)
         dates = [str(i)[:10] for i in dr]
         vals = pipe(x.visits_by_day, json.loads, enumerate)
         out = [((dates[i], x.id), val) for i, val in vals]
