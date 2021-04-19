@@ -116,6 +116,7 @@ if __name__=='__main__':
     .rdd.map(lambda x: trnsfm(x)).flatMap(lambda x: x).cache()
     pattern = sc.union([pattern, dateData]).cache()
     pattern = pattern.groupByKey().map(lambda x:  (x[0], [i for i in x[1]]))
+    pattern = pattern.coalesce(20)
     checkVar = pattern.getNumPartitions()
     pipe(np.repeat(checkVar, 50), sc.parallelize).saveAsTextFile("checkPartitions")
     pattern.saveAsTextFile("TEST2")
