@@ -118,13 +118,19 @@ if __name__=='__main__':
     ).select(['safegraph_place_id', 'date_range_start', 'date_range_end', 'visits_by_day'])
     
     df = pattern.join(place, ['safegraph_place_id'], 'inner')
+    
+    place.unpersist()
+    pattern.unpersist()
+    del place
+    del pattern
+
     df = df.filter(
         (df['date_range_start'] >= datetime.datetime(2019,1,1)) & 
         (df['date_range_end'] < datetime.datetime(2021,1,1))
     )
     
-    dateData = pipe(date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
-    .map(lambda x: (pipe(x, str)[:10], 0))
+    # dateData = pipe(date_range("2020-01-01", "2020-12-31"), sc.parallelize) \
+    # .map(lambda x: (pipe(x, str)[:10], 0))
 
     def trnsfm(x):        
         dr = date_range(x.date_range_start, x.date_range_end)
@@ -149,7 +155,8 @@ if __name__=='__main__':
     # ])
     # spark.createDataFrame(df, schema = schema)
 
-    df.filter(df.id == 0).save(name0, 'com.databricks.spark.csv')
+    #df.filter(df.id == 0).save(name0, 'com.databricks.spark.csv')
+    df.filter(df.id == 0).write.format('com.databricks.spark.csv').save(name0)
     # df.filter(df.id == 2).show()
     # df.filter(df.id == 3).show()
     # df.filter(df.id == 4).show()
